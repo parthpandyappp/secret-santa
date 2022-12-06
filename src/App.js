@@ -1,5 +1,9 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { useEffect, useState } from "react";
 
+// importing routes
+import { Routes } from "./routes";
+
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import {
   getFirestore,
   query,
@@ -9,9 +13,8 @@ import {
   doc,
   addDoc,
   setDoc,
-  collection
+  collection,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { signInWithGoogle } from "./features/authSlice";
 
@@ -24,6 +27,21 @@ export default function App() {
   const dispatch = useDispatch();
   // const [obtainedUser, setObtainedUser] = useState(null);
   // const [finalUser, setFinalUser] = useState(null)
+  const [obtainedUser, setObtainedUser] = useState(null);
+  const [finalUser, setFinalUser] = useState(null);
+
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const signInWithGoogle = async () => {
+    try {
+      const googleProvider = new GoogleAuthProvider();
+      const res = await signInWithPopup(auth, googleProvider);
+      setObtainedUser(res.user);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
 
   // const auth = getAuth(app);
   // const db = getFirestore(app);
@@ -111,6 +129,7 @@ export default function App() {
       >
         Sign in with Google
       </button>
+      <Routes />
     </div>
   );
 }
