@@ -1,5 +1,9 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { useEffect, useState } from "react";
 
+// importing routes
+import { Routes } from "./routes";
+
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import {
   getFirestore,
   query,
@@ -9,15 +13,14 @@ import {
   doc,
   addDoc,
   setDoc,
-  collection
+  collection,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
 
 import { app } from "./firebase";
 
 export default function App() {
   const [obtainedUser, setObtainedUser] = useState(null);
-  const [finalUser, setFinalUser] = useState(null)
+  const [finalUser, setFinalUser] = useState(null);
 
   const auth = getAuth(app);
   const db = getFirestore(app);
@@ -25,7 +28,7 @@ export default function App() {
     try {
       const googleProvider = new GoogleAuthProvider();
       const res = await signInWithPopup(auth, googleProvider);
-      setObtainedUser(res.user)
+      setObtainedUser(res.user);
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -45,7 +48,10 @@ export default function App() {
     try {
       const querySnapshot = await getUserDataFromFireStore();
       const data = querySnapshot.docs.map((snap) => snap.data());
-      console.log("check user existence: ", data.find((user) => user.uid === currentUser.uid))
+      console.log(
+        "check user existence: ",
+        data.find((user) => user.uid === currentUser.uid)
+      );
       return data.find((user) => user.uid === currentUser.uid);
     } catch (error) {
       console.log(error);
@@ -56,7 +62,7 @@ export default function App() {
     try {
       const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
-      console.log("GOT USER", docSnap.exists())
+      console.log("GOT USER", docSnap.exists());
       // if (docSnap.exists()) {
       setFinalUser(docSnap.data());
       // }
@@ -68,8 +74,8 @@ export default function App() {
   useEffect(() => {
     (async () => {
       if (obtainedUser) {
-        const userExist = await doesExist(obtainedUser)
-        console.log(userExist)
+        const userExist = await doesExist(obtainedUser);
+        console.log(userExist);
         if (!userExist) {
           const userRef = collection(db, "users");
           await setDoc(doc(userRef, obtainedUser.uid), {
@@ -78,7 +84,7 @@ export default function App() {
             authProvider: "google",
             email: obtainedUser.email,
             pic: obtainedUser.photoURL,
-            hobbies: []
+            hobbies: [],
           });
           setFinalUser({
             uid: obtainedUser.uid,
@@ -86,18 +92,16 @@ export default function App() {
             authProvider: "google",
             email: obtainedUser.email,
             pic: obtainedUser.photoURL,
-            hobbies: []
-          })
-
+            hobbies: [],
+          });
         } else {
           await getUser(obtainedUser.uid, setFinalUser);
         }
       }
-
     })();
-  }, [obtainedUser])
+  }, [obtainedUser]);
 
-  console.log(finalUser)
+  console.log(finalUser);
 
   return (
     <div className="App">
@@ -108,6 +112,7 @@ export default function App() {
       >
         Sign in with Google
       </button>
+      <Routes />
     </div>
   );
 }
