@@ -1,5 +1,6 @@
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { TbArrowsJoin } from "react-icons/tb";
@@ -8,14 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
+  const { authUser } = useSelector((state) => state.auth);
   const checkAuthAndNavigateToPage = (pageName) => {
     // TODO: add logic to check if user is logged in or not
     const isLoggedIn = false;
 
-    if (!isLoggedIn) {
-      toast.error("You have not logged-in yet!", {
+    if (!authUser) {
+      toast.error("You have not signed-in yet!", {
         style: {
-          borderRadius: "10px",
           background: "#333",
           color: "#fff",
         },
