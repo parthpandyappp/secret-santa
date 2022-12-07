@@ -1,5 +1,7 @@
+import "./App.css";
 import { useEffect } from "react";
 import { Routes } from "./routes";
+import { NavBar } from "./components";
 import { useSelector, useDispatch } from "react-redux";
 import { signInWithGoogle, saveUserAndValidateExistence } from "./features";
 
@@ -20,12 +22,8 @@ export default function App() {
   }, [bufferData, dispatch])
 
   return (
-    <div className="App">
-      <button
-        onClick={() => dispatch(signInWithGoogle())}
-      >
-        Sign in with Google
-      </button>
+    <div className="flex flex-col min-h-screen w-5/6 mx-auto p-2">
+      <NavBar />
       <Routes />
     </div>
   );
