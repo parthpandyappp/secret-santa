@@ -14,7 +14,7 @@ function Home() {
           ho ho ho! Let's make each other's christmas adorable!
         </p>
       </div>
-      <div className="flex gap-2">
+      <div className="flex md:flex-row flex-col gap-2">
         <button className="transition delay-150 flex justify-items-start items-center gap-2 px-8 py-4 bg-amber-200 group/item hover:bg-amber-300 rounded">
           <HiOutlineUserGroup className="transition delay-150 text-3xl p-1 bg-amber-300 group-hover/item:bg-amber-400 rounded" />
           My groups
