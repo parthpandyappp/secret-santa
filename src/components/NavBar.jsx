@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import heroimg from "../assets/heroimg.png";
 import { signInWithGoogle } from "../features";
 import { AiOutlineGoogle } from "react-icons/ai";
@@ -39,7 +39,8 @@ const NavBar = () => {
       ) : (
         <div className="flex gap-2 items-center">
           <p className="text-lg flex gap-1">
-            Welcome, {authUser?.name.split(" ")[0]} <span className="animate-bounce">👋</span>
+            Welcome, {authUser?.name.split(" ")[0]}{" "}
+            <span className="animate-bounce">👋</span>
           </p>
           <img
             src={authUser?.pic}

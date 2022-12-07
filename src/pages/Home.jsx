@@ -8,7 +8,7 @@ function Home() {
   return (
     <div className="flex flex-col gap-8 items-center justify-center grow text-xl">
       <div className="flex justify-center items-center flex-col">
-        <img src={heroimg} alt="" className="h-64 rounded-full " />
+        <img src={heroimg} alt="" className="h-64 w-64 rounded-full " />
         <h1 className="font-semibold text-4xl mt-2">Santaaa</h1>
         <p className="text-center text-gray-500">
           ho ho ho! Let's make each other's christmas adorable!

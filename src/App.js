@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Routes } from "./routes";
 import { NavBar } from "./components";
 import { useSelector, useDispatch } from "react-redux";
-import { signInWithGoogle, saveUserAndValidateExistence } from "./features";
+import { saveUserAndValidateExistence } from "./features";
 
 
 export default function App() {
