@@ -1,5 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import { Dashboard, Home, MyGroups, CreateGroup, JoinGroup } from "../pages";
+import {
+  Dashboard,
+  Home,
+  MyGroups,
+  CreateGroup,
+  JoinGroup,
+  AdditionalInfo,
+  Notfound,
+} from "../pages";
 
 function EndPoints() {
   return (
@@ -9,8 +17,9 @@ function EndPoints() {
       <Route path="/explore" element={<MyGroups />} />
       <Route path="/create" element={<CreateGroup />} />
       <Route path="/join" element={<JoinGroup />} />
+      <Route path="/info" element={<AdditionalInfo />} />
       {/* <Route path="/login" element={<Login />} /> */}
-      {/* <Route path="*" element={<Notfound />} /> */}
+      <Route path="*" element={<Notfound />} />
     </Routes>
   );
 }
