@@ -1,1 +1,1 @@
-export { saveUserAndValidateExistence, signInWithGoogle } from "./authSlice"
+export { saveUserAndValidateExistence, signInWithGoogle, userLogout } from "./authSlice"

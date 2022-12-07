@@ -22,7 +22,7 @@ export default function App() {
   }, [bufferData, dispatch])
 
   return (
-    <div className="flex flex-col min-h-screen w-5/6 mx-auto p-2">
+    <div className="flex flex-col min-h-screen md:w-5/6 w-full md:mx-auto md:p-2">
       <NavBar />
       <Routes />
     </div>

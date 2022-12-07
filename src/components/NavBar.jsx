@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import heroimg from "../assets/heroimg.png";
-import { signInWithGoogle } from "../features";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import { signInWithGoogle, userLogout } from "../features";
 
 const NavBar = () => {
   const dispatch = useDispatch();
+  const [showDropdown, setShowDropdown] = useState(false);
   const { authUser } = useSelector((state) => state.auth);
   console.log("AUTH USER FROM NAV: ", authUser?.pic);
   return (
-    <nav className="flex justify-between h-14 items-center">
+    <nav className="flex justify-between h-14 items-center px-2 md:p-0">
       <div className="flex gap-2 items-center">
         {/* <svg
           className="w-6 h-6 text-red-400"
@@ -38,16 +39,32 @@ const NavBar = () => {
         </div>
       ) : (
         <div className="flex gap-2 items-center">
-          <p className="text-lg flex gap-1">
+          <p className="text-lg md:flex gap-1 hidden">
             Welcome, {authUser?.name.split(" ")[0]}{" "}
             <span className="animate-bounce">👋</span>
           </p>
-          <img
-            src={authUser?.pic}
-            className="w-10 h-10 rounded-full"
-            alt=""
-            referrerpolicy="no-referrer"
-          />
+          <div className="relative">
+            <img
+              src={authUser?.pic}
+              className="w-10 h-10 rounded-full"
+              alt=""
+              referrerpolicy="no-referrer"
+              onClick={() => setShowDropdown((prev) => !prev)}
+            />
+            {showDropdown && (
+              <ul className="z-10 absolute -bottom-30 right-0 bg-white shadow-2xl py-4 text-md text-paragraph font-medium w-24 px-1">
+                <li className="hover:bg-gray-50 px-1">Profile</li>
+                <li className="hover:bg-gray-50 px-1">My groups</li>
+                <li
+                  className="hover:bg-gray-50 px-1 text-red-500 cursor-pointer"
+                  onClick={() => dispatch(userLogout())}
+                >
+                  {" "}
+                  Logout
+                </li>
+              </ul>
+            )}
+          </div>
         </div>
       )}
     </nav>
