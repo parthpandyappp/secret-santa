@@ -7,8 +7,8 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 const initialState = {
     bufferData: null,
-    authUser: null,
-    authUserLoading: false,
+    authUser: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
+    isLoggedIn: localStorage.getItem("isLoggedIn") ? JSON.parse(localStorage.getItem("isLoggedIn")) : false,
 }
 
 
@@ -53,6 +53,7 @@ const authSlice = createSlice({
     reducers: {
         userLogout: (state) => {
             state.authUser = null;
+            state.isLoggedIn = true
         }
     },
     extraReducers: (builder) => {
@@ -63,15 +64,16 @@ const authSlice = createSlice({
             })
             .addCase(signInWithGoogle.pending, (state) => {
                 console.log("EXEC PENDING")
-                state.authUserLoading = true;
+                state.isLoggedIn = false;
             })
             .addCase(saveUserAndValidateExistence.pending, (state) => {
-                state.authUserLoading = true;
+                state.isLoggedIn = true;
             })
             .addCase(saveUserAndValidateExistence.fulfilled, (state, action) => {
                 console.log("PAYLOAD: ", action.payload)
                 state.authUser = action.payload;
-                state.authUserLoading = false;
+                localStorage.setItem("user", JSON.stringify(action.payload))
+                state.isLoggedIn = true
             })
     }
 })
