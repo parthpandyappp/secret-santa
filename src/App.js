@@ -7,12 +7,12 @@ import { saveUserAndValidateExistence } from "./features";
 
 
 export default function App() {
-  const { bufferData, authUserLoading, authUser } = useSelector(
+  const { bufferData, isLoggedIn, authUser } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
 
-  console.log("INITIALS: ", authUserLoading, bufferData)
+  console.log("INITIALS: ", isLoggedIn, bufferData)
   console.log("AUTH USER: ", authUser)
 
   useEffect(() => {
