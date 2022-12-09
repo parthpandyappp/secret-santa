@@ -68,6 +68,7 @@ const authSlice = createSlice({
             })
             .addCase(saveUserAndValidateExistence.pending, (state) => {
                 state.isLoggedIn = true;
+                localStorage.setItem("isLoggedIn", true)
             })
             .addCase(saveUserAndValidateExistence.fulfilled, (state, action) => {
                 console.log("PAYLOAD: ", action.payload)
