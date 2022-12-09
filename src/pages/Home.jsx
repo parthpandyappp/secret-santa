@@ -9,18 +9,15 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
-  const { authUser } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState({
     value: false,
     class: "hidden",
   });
 
   const checkAuthAndNavigateToPage = (pageName) => {
-    // TODO: add logic to check if user is logged in or not
-    const isLoggedIn = false;
-
     if (pageName !== "login") {
-      if (!authUser) {
+      if (!isLoggedIn) {
         toast.error("You have not signed-in yet!", {
           style: {
             background: "#333",
