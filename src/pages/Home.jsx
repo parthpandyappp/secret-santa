@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -10,20 +10,29 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
   const { authUser } = useSelector((state) => state.auth);
+  const [showModal, setShowModal] = useState({
+    value: false,
+    class: "hidden",
+  });
+
   const checkAuthAndNavigateToPage = (pageName) => {
     // TODO: add logic to check if user is logged in or not
     const isLoggedIn = false;
 
-    if (!authUser) {
-      toast.error("You have not signed-in yet!", {
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      });
+    if (pageName !== "login") {
+      if (!authUser) {
+        toast.error("You have not signed-in yet!", {
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        });
+      } else {
+        // navigate to the respective page
+        navigate(`/${pageName}`, { replace: true });
+      }
     } else {
-      // navigate to the respective page
-      navigate(`/${pageName}`, { replace: true });
+      setShowModal({ value: true, class: "block" });
     }
   };
   return (
@@ -68,6 +77,39 @@ function Home() {
           Join a group
         </button>
       </div>
+
+      <div
+        className={`${showModal.class} absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center h-full bg-gray-700/40 `}
+      >
+        <div className="p-4 bg-secondary text-paragraphDark rounded bg-slate-50">
+          <div className="text-2xl flex w-full justify-between items-center px-2 py-2 font-bold">
+            <h1>Create Group</h1>
+            <button
+              onClick={() => setShowModal({ value: false, class: "hidden" })}
+            >
+              Close
+            </button>
+          </div>
+          <form className="flex flex-col border mx-1 rounded px-12 py-6">
+            <label htmlFor="groupName">Group Name</label>
+            <input
+              type="text"
+              name="groupName"
+              id="groupName"
+              className="border border-2 px-3 py-4 rounded"
+              required
+            />
+
+            <button
+              className="w-full border bg-primaryDark text-paragraphLight hover:opacity-80 my-2 px-3 py-2 rounded"
+              type="submit"
+            >
+              Create Group
+            </button>
+          </form>
+        </div>
+      </div>
+
       <div>
         <Toaster position="bottom-right" reverseOrder={false} />
       </div>
