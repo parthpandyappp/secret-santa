@@ -13,25 +13,37 @@ function Home() {
   const [showModal, setShowModal] = useState({
     value: false,
     class: "hidden",
+    create: false,
+    join: false,
   });
 
   const checkAuthAndNavigateToPage = (pageName) => {
-    if (pageName !== "login") {
-      if (!isLoggedIn) {
-        toast.error("You have not signed-in yet!", {
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
-        });
-      } else {
-        // navigate to the respective page
-        navigate(`/${pageName}`, { replace: true });
-      }
+    if (!isLoggedIn) {
+      toast.error("You have not signed-in yet!", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
     } else {
-      setShowModal({ value: true, class: "block" });
+      // navigate to the respective page
+      navigate(`/${pageName}`, { replace: true });
     }
   };
+
+  const checkAuthAndShowModal = (pageName) => {
+    if (!isLoggedIn) {
+      toast.error("You have not signed-in yet!", {
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    } else {
+      setShowModal({ value: true, class: "block", [pageName]: true });
+    }
+  };
+
   return (
     <div className="flex flex-col gap-8 items-center justify-center grow text-xl">
       <div className="flex justify-center items-center flex-col">
@@ -58,7 +70,7 @@ function Home() {
         <button
           className="transition delay-150 flex items-center gap-2 px-8 py-4 bg-green-200  group/item hover:bg-green-300 rounded"
           onClick={() => {
-            checkAuthAndNavigateToPage("create");
+            checkAuthAndShowModal("create");
           }}
         >
           <AiOutlineUsergroupAdd className="transition delay-150 text-3xl p-1 bg-green-300 group-hover/item:bg-green-400 rounded" />
@@ -67,7 +79,7 @@ function Home() {
         <button
           className="transition delay-150 flex items-center gap-2 px-8 py-4 bg-red-200 rounded group/item hover:bg-red-300"
           onClick={() => {
-            checkAuthAndNavigateToPage("join");
+            checkAuthAndShowModal("join");
           }}
         >
           <TbArrowsJoin className="transition delay-150 text-3xl p-1 bg-red-300 group-hover/item:bg-red-400 rounded" />
@@ -75,37 +87,73 @@ function Home() {
         </button>
       </div>
 
-      <div
-        className={`${showModal.class} absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center h-full bg-gray-700/40 `}
-      >
-        <div className="p-4 bg-secondary text-paragraphDark rounded bg-slate-50">
-          <div className="text-2xl flex w-full justify-between items-center px-2 py-2 font-bold">
-            <h1>Create Group</h1>
-            <button
-              onClick={() => setShowModal({ value: false, class: "hidden" })}
-            >
-              Close
-            </button>
-          </div>
-          <form className="flex flex-col border mx-1 rounded px-12 py-6">
-            <label htmlFor="groupName">Group Name</label>
-            <input
-              type="text"
-              name="groupName"
-              id="groupName"
-              className="border border-2 px-3 py-4 rounded"
-              required
-            />
+      {showModal.create && (
+        <div
+          className={`${showModal.class} absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center h-full bg-gray-700/40 `}
+        >
+          <div className="p-4 bg-secondary text-paragraphDark rounded bg-slate-50">
+            <div className="text-2xl flex w-full justify-between items-center px-2 py-2 font-bold">
+              <h1>Create Group</h1>
+              <button
+                onClick={() => setShowModal({ value: false, class: "hidden" })}
+              >
+                Close
+              </button>
+            </div>
+            <form className="flex flex-col border mx-1 rounded px-12 py-6">
+              <input
+                type="text"
+                name="groupName"
+                id="groupName"
+                placeholder="enter group name"
+                className="border border-2 px-3 py-4 rounded"
+                required
+              />
 
-            <button
-              className="w-full border bg-primaryDark text-paragraphLight hover:opacity-80 my-2 px-3 py-2 rounded"
-              type="submit"
-            >
-              Create Group
-            </button>
-          </form>
+              <button
+                className="w-full border bg-primaryDark text-paragraphLight hover:opacity-80 my-2 px-3 py-2 rounded"
+                type="submit"
+              >
+                Create Group
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
+
+      {showModal.join && (
+        <div
+          className={`${showModal.class} absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center h-full bg-gray-700/40 `}
+        >
+          <div className="p-4 bg-secondary text-paragraphDark rounded bg-slate-50">
+            <div className="text-2xl flex w-full justify-between items-center px-2 py-2 font-bold">
+              <h1>Join Group</h1>
+              <button
+                onClick={() => setShowModal({ value: false, class: "hidden" })}
+              >
+                Close
+              </button>
+            </div>
+            <form className="flex flex-col border mx-1 rounded px-12 py-6">
+              <input
+                type="url"
+                name="groupName"
+                id="groupName"
+                placeholder="enter group joining link"
+                className="border border-2 px-3 py-4 rounded"
+                required
+              />
+
+              <button
+                className="w-full border bg-primaryDark text-paragraphLight hover:opacity-80 my-2 px-3 py-2 rounded"
+                type="submit"
+              >
+                Join Group
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       <div>
         <Toaster position="bottom-right" reverseOrder={false} />
