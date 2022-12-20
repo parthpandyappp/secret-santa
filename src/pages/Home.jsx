@@ -1,15 +1,19 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { TbArrowsJoin } from "react-icons/tb";
 import heroimg from "../assets/heroimg.png";
 import { useNavigate } from "react-router-dom";
+import { createSecretGroup } from "../features";
+import { v4 as uuidv4 } from "uuid";
 
 function Home() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const [groupName, setGroupName] = useState("");
+  const dispatch = useDispatch();
+  const { authUser, isLoggedIn } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState({
     value: false,
     class: "hidden",
@@ -42,6 +46,22 @@ function Home() {
     } else {
       setShowModal({ value: true, class: "block", [pageName]: true });
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const groupData = {
+      gid: uuidv4(),
+      creator: authUser.uid,
+      createdAt: new Date(),
+      groupName: groupName,
+      members: [],
+    };
+    dispatch(
+      createSecretGroup({
+        groupData,
+      })
+    );
   };
 
   return (
@@ -100,13 +120,14 @@ function Home() {
                 Close
               </button>
             </div>
-            <form className="flex flex-col border mx-1 rounded px-12 py-6">
+            <form className="flex flex-col border mx-1 rounded px-12 py-6" onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="groupName"
                 id="groupName"
                 placeholder="enter group name"
                 className="border border-2 px-3 py-4 rounded"
+                onChange={(e) => setGroupName(e.target.value)}
                 required
               />
 
