@@ -1,14 +1,15 @@
-import React from "react";
-import heroimg from "../assets/heroimg.png";
-import { signInWithGoogle } from "../features";
+import { useState } from "react";
 import { AiOutlineGoogle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { signInWithGoogle, userLogout } from "../features";
+import { toastWarning } from "../helper-functions";
+import heroimg from "../assets/heroimg.png";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const { authUser } = useSelector((state) => state.auth);
-  console.log("AUTH USER FROM NAV: ", authUser?.pic);
+  const [showDropdown, setShowDropdown] = useState(false);
   return (
     <nav className="flex justify-between h-14 items-center">
       <div className="flex gap-2 items-center">
@@ -30,18 +31,48 @@ const NavBar = () => {
           />
         </div>
       ) : (
-        <div className="flex gap-2 items-center">
-          <p className="text-lg flex gap-1">
-            Welcome, {authUser?.name.split(" ")[0]}{" "}
-            <span className="animate-bounce">👋</span>
-          </p>
-          <img
-            src={authUser?.pic}
-            className="w-10 h-10 rounded-full"
-            alt=""
-            referrerpolicy="no-referrer"
-          />
-        </div>
+        <>
+          {authUser && (
+            <div
+              className="relative"
+              onMouseEnter={() => setShowDropdown(!showDropdown)}
+              onMouseLeave={() => setShowDropdown(!showDropdown)}
+            >
+              <div className="flex gap-2 items-center">
+                <p className="text-lg flex gap-1">
+                  Welcome, {authUser?.name.split(" ")[0]}{" "}
+                  <span className="animate-bounce">👋</span>
+                </p>
+                <img
+                  src={authUser?.pic}
+                  className="w-10 h-10 rounded-full"
+                  alt=""
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              {showDropdown && (
+                <ul className="z-10 absolute -bottom-30 right-0 bg-white shadow-2xl py-4 text-md text-paragraph font-medium">
+                  <Link to={"/explore"} onClick={() => setShowDropdown(false)}>
+                    <li className="hover:bg-gray-50 px-6">Profile</li>
+                  </Link>
+                  <Link to={"/mygroups"} onClick={() => setShowDropdown(false)}>
+                    <li className="hover:bg-gray-50 px-6">My Groups</li>
+                  </Link>
+                  <li
+                    className="hover:bg-gray-50 px-6 text-red-500 cursor-pointer"
+                    onClick={() => {
+                      dispatch(userLogout());
+                      toastWarning("User Logged Out");
+                    }}
+                  >
+                    {" "}
+                    Logout
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
+        </>
       )}
     </nav>
   );

@@ -1,13 +1,14 @@
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { TbArrowsJoin } from "react-icons/tb";
-import heroimg from "../assets/heroimg.png";
 import { useNavigate } from "react-router-dom";
-import { createSecretGroup } from "../features";
 import { v4 as uuidv4 } from "uuid";
+import { createSecretGroup } from "../features";
+import { toastError } from "../helper-functions";
+import heroimg from "../assets/heroimg.png";
 
 function Home() {
   const navigate = useNavigate();
@@ -23,12 +24,7 @@ function Home() {
 
   const checkAuthAndNavigateToPage = (pageName) => {
     if (!isLoggedIn) {
-      toast.error("You have not signed-in yet!", {
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      });
+      toastError("You have not signed-in yet!");
     } else {
       // navigate to the respective page
       navigate(`/${pageName}`, { replace: true });
@@ -37,12 +33,7 @@ function Home() {
 
   const checkAuthAndShowModal = (pageName) => {
     if (!isLoggedIn) {
-      toast.error("You have not signed-in yet!", {
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      });
+      toastError("You have not signed-in yet!");
     } else {
       setShowModal({ value: true, class: "block", [pageName]: true });
     }
@@ -120,13 +111,16 @@ function Home() {
                 Close
               </button>
             </div>
-            <form className="flex flex-col border mx-1 rounded px-12 py-6" onSubmit={handleSubmit}>
+            <form
+              className="flex flex-col border mx-1 rounded px-12 py-6"
+              onSubmit={handleSubmit}
+            >
               <input
                 type="text"
                 name="groupName"
                 id="groupName"
                 placeholder="enter group name"
-                className="border border-2 px-3 py-4 rounded"
+                className="border-2 px-3 py-4 rounded"
                 onChange={(e) => setGroupName(e.target.value)}
                 required
               />
@@ -161,7 +155,7 @@ function Home() {
                 name="groupName"
                 id="groupName"
                 placeholder="enter group joining link"
-                className="border border-2 px-3 py-4 rounded"
+                className="border-2 px-3 py-4 rounded"
                 required
               />
 

@@ -1,2 +1,6 @@
-export { saveUserAndValidateExistence, signInWithGoogle } from "./authSlice"
-export { createSecretGroup } from "./groupSlice"
+export {
+  saveUserAndValidateExistence,
+  signInWithGoogle,
+  userLogout,
+} from "./authSlice";
+export { createSecretGroup } from "./groupSlice";
